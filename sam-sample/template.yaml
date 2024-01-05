@@ -27,8 +27,28 @@ Resources:
         HelloWorld:
           Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
           Properties:
-            Path: /hello
+            Path: /helloo
             Method: get
+        Schedule:
+          Type: Schedule
+          Properties:
+            Schedule: rate(30 days)
+            Name: my-schedule
+            Description: Example schedule
+            Enabled: True
+        Glue:
+          Type: EventBridgeRule
+          Properties:
+            Pattern:
+              source:
+                - aws.glue
+              detail-type:
+                - Glue Crawler State Change
+              detail:
+                state:
+                  - Succeeded
+                crawlerName:
+                  - sam-app
 
 Outputs:
   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
